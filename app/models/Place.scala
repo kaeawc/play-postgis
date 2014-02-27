@@ -27,11 +27,11 @@ object Place extends ((
   val places =
     long("id") ~
     str("name") ~
-    get[Double]("name") ~
-    get[Double]("name") ~
+    get[Double]("longitude") ~
+    get[Double]("latitude") ~
     date("created") map {
-      case     id~name~created =>
-        Place(id,name,asDateTime(created))
+      case    id~name~longitude~latitude~created =>
+        Place(id,name,longitude,latitude,asDateTime(created))
     }
 
   def getById(id:Long) = Future {
