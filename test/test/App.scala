@@ -30,10 +30,10 @@ object App {
     Map(
       "evolutionplugin" -> "enabled",
       
-      "db.default.driver" -> "org.h2.Driver",
-      "db.default.url" -> "jdbc:h2:mem:default",
+      "db.default.driver" -> "org.postgresql.Driver",
+      "db.default.url" -> "jdbc:postgresql://localhost/default",
       "applyEvolutions.default" -> "true",
-      "applyDownEvolutions.default" -> "true",
+      "applyDownEvolutions.default" -> "true"
     )
   )
 
