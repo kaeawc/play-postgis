@@ -18,7 +18,7 @@ object WidgetSpec extends Specification {
     names.foldLeft(List[Int]()) {
       (list,name) =>
 
-      val id:Int = sync {
+      val id:Int = waitFor {
         Widget.create(name) map {
           case Some(id:Long) => id.toInt
           case _ => failure("Widget should have been created")
@@ -34,28 +34,38 @@ object WidgetSpec extends Specification {
 
     "return some Widget if such a Widget exists" in new App {
 
-      create("asdf")
+      val created = create("asdf")
 
-      val result = Widget.getById(1) map {
-        case Some(widget:Widget) => {
-          widget.id mustEqual 1
-          widget.name mustEqual "asdf"
-          success
+      created.length mustEqual 1
+
+      waitFor {
+        Widget.getById(created.head) map {
+          case Some(widget:Widget) => {
+            widget.name mustEqual "asdf"
+            success
+          }
+          case _ => failure("This widget should exist")
         }
-        case _ => failure("This widget should exist")
       }
-
-      sync { result }
     }
     
     "return nothing if no such Widget exists" in new App {
 
-      val result = Widget.getById(1) map {
+      val result = Widget.getById(-1) map {
         case Some(widget:Widget) => failure("This widget should not exist")
         case _ => success
       }
 
-      sync { result }
+      waitFor { result }
+    }
+  }
+
+
+  "Widget.create" should {
+
+    "return some newly created Widget" in new App {
+
+      create("asdf")
     }
   }
 }

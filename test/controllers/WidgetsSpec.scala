@@ -59,7 +59,7 @@ class WidgetsSpec extends Specification {
 
     "return no content because there are no widgets with this id" in new App {
 
-      val request = FakeRequest(GET, "/widget/1")
+      val request = FakeRequest(GET, "/widget/-1")
 
       val response = route(request).get
 
@@ -93,9 +93,9 @@ class WidgetsSpec extends Specification {
 
     "update an existing widget" in new App {
 
-      create("asdf")
+      val id = create("asdf").head
 
-      val header = FakeRequest(PUT, "/widget/1")
+      val header = FakeRequest(PUT, "/widget/" + id)
 
       val body = Json.obj(
         "name" -> "asdf"
@@ -111,9 +111,9 @@ class WidgetsSpec extends Specification {
 
     "delete an existing widget" in new App {
 
-      create("asdf")
+      val id = create("asdf").head
 
-      val request = FakeRequest(DELETE, "/widget/1")
+      val request = FakeRequest(DELETE, "/widget/" + id)
 
       val response = route(request).get
 
