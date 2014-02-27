@@ -120,28 +120,6 @@ object Widget extends ((
     }
   }
 
-  def resetAutoIncrement() = Future {
-    DB.withConnection { implicit connection =>
-      SQL(
-        """
-          UPDATE sqlite_sequence
-          SET seq = 0
-          WHERE name = 'widget';
-        """
-      ).executeUpdate()
-    }
-  }
-  
-
-  def wipeTable() = {
-    for {
-      del <- deleteAll()
-      reset <- resetAutoIncrement()
-    } yield {
-      reset
-    }
-  }
-
   def create(name:String) = Future {
 
     val created = now
