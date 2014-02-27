@@ -2,9 +2,9 @@
 # --- !Ups
 
 CREATE TABLE widget (
-  id        INTEGER      NOT NULL PRIMARY KEY AUTOINCREMENT,
+  id        BIGSERIAL    NOT NULL PRIMARY KEY,
   name      VARCHAR(255) NOT NULL,
-  created   DATETIME     NOT NULL
+  created   TIMESTAMP    NOT NULL
 );
 
 # --- !Downs
