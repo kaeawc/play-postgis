@@ -7,13 +7,13 @@ import anorm.SqlParser._
 import scala.concurrent.Future
 
 case class Widget(
-  id      : Int,
+  id      : Long,
   name    : String,
   created : DateTime = now
 )
 
 object Widget extends ((
-  Int,
+  Long,
   String,
   DateTime
 ) => Widget) {
@@ -21,14 +21,14 @@ object Widget extends ((
   implicit val jsonFormat = Json.format[Widget]
 
   val widgets =
-    int("id") ~
+    long("id") ~
     str("name") ~
-    str("created") map {
+    date("created") map {
       case     id~name~created =>
-        Widget(id,name,new DateTime(created))
+        Widget(id,name,asDateTime(created))
     }
 
-  def getById(id:Int) = Future {
+  def getById(id:Long) = Future {
     DB.withConnection { implicit connection =>
       SQL(
         """
@@ -158,8 +158,8 @@ object Widget extends ((
           );
         """
       ).on(
-        'name -> name,
-        'created -> created
+        'name    -> name,
+        'created -> asTimestamp(created)
       ).executeInsert()
     }
   }

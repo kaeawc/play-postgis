@@ -8,6 +8,8 @@ object Date {
 
   import java.util.TimeZone
 
+  import java.sql.Timestamp
+
   import java.text.SimpleDateFormat
 
   val dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS")
@@ -41,12 +43,12 @@ object Date {
     else
       None
 
-  def asDate(date:DateTime) = 
-    date.toDate
+  def asTimestamp(date:DateTime) = 
+    new Timestamp(date.getMillis())
 
-  def asDate(date:Option[DateTime]) = 
+  def asTimestamp(date:Option[DateTime]) = 
     if(date.isDefined)
-      Some(date.get.toDate)
+      Some(new Timestamp(date.get.getMillis()))
     else
       None
 
